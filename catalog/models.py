@@ -2,14 +2,11 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-# Create your models here.
-
 CATEGORY_CHOICES = (
     ('merch', 'Merchandise'),
     ('exercise', 'Exercise Plan'),
     ('nutrition', 'Nutrition Plan'),
 )
-
 
 class Product(models.Model):
     name = models.CharField(max_length=200)

@@ -11,7 +11,6 @@
     <p>{{ product.description }}</p>
     <p class="h4">£{{ product.price }}</p>
     <a class="btn btn-success" href="{% url 'add_to_cart' product.slug %}">Add to cart</a>
-    {% include 'snippets/share.html' %}
   </div>
 </div>
 <hr>

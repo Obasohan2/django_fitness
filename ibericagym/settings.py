@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'home',  # your app
     'catalog',  
     'profiles.apps.ProfilesConfig',  # your app
+    'subscriptions',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"

@@ -1,0 +1,7 @@
+[
+  {"model": "catalog.product", "pk": 1, "fields": {"name": "Iberica Tee", "slug": "iberica-tee", "category": 1, "description": "Soft cotton T‑shirt with Iberica Gym logo.", "price": "19.99", "is_digital": false, "active": true, "created": "2025-01-01T00:00:00Z"}},
+  {"model": "catalog.product", "pk": 2, "fields": {"name": "Resistance Band Set", "slug": "resistance-band-set", "category": 1, "description": "Set of 5 latex bands for home workouts.", "price": "14.99", "is_digital": false, "active": true, "created": "2025-01-01T00:00:00Z"}},
+  {"model": "catalog.product", "pk": 3, "fields": {"name": "Lean Muscle Plan", "slug": "lean-muscle-plan", "category": 2, "description": "4‑week hypertrophy program with progressive overload.", "price": "29.00", "is_digital": true, "active": true, "created": "2025-01-01T00:00:00Z"}},
+  {"model": "catalog.product", "pk": 4, "fields": {"name": "Keto Starter Guide", "slug": "keto-starter", "category": 3, "description": "Beginner's guide to the ketogenic diet with meal plans.", "price": "9.99", "is_digital": true, "active": true, "created": "2025-01-01T00:00:00Z"}},
+  {"model": "catalog.product", "pk": 5, "fields": {"name": "Protein Shaker Bottle", "slug": "protein-shaker", "category": 1, "description": "Leak-proof shaker bottle with measurement markings.", "price": "12.99", "is_digital": false, "active": true, "created": "2025-01-01T00:00:00Z"}}
+]

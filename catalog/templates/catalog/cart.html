@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your cart</h2>
+<table class="table table-striped">
+  <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th></th></tr></thead>
+  <tbody>
+  {% for pid, item in cart.items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.qty }}</td>
+      <td>£{{ item.price|floatformat:2 }}</td>
+      <td><a href="{% url 'cart_remove' pid %}" class="btn btn-sm btn-outline-danger">Remove</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="h4">Total: £{{ total|floatformat:2 }}</p>
+<a class="btn btn-success" href="/checkout/start/">Checkout</a>
+{% endblock %}

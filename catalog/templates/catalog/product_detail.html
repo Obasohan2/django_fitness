@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    {% if product.image %}<img class="img-fluid" src="{{ product.image.url }}" alt="">{% endif %}
+  </div>
+  <div class="col-md-6">
+    <h2>{{ product.name }}</h2>
+    <p class="text-muted">Category: {{ product.category.name }}</p>
+    <p>{{ product.description }}</p>
+    <p class="h4">£{{ product.price }}</p>
+    <a class="btn btn-success" href="{% url 'add_to_cart' product.slug %}">Add to cart</a>
+    {% include 'snippets/share.html' %}
+  </div>
+</div>
+<hr>
+<h4>Reviews</h4>
+{% for r in product.reviews.all %}
+  <div class="mb-3">
+    <strong>{{ r.user.username }}</strong> ({{ r.rating }}/5)
+    <div>{{ r.title }}</div>
+    <div class="text-muted">{{ r.created|date:"M d, Y" }}</div>
+    <p>{{ r.body }}</p>
+  </div>
+{% empty %}
+  <p>No reviews yet.</p>
+{% endfor %}
+{% if request.user.is_authenticated %}
+<form method="post" action="{% url 'add_review' product.slug %}">{% csrf_token %}
+  {{ form|crispy }}
+  <button class="btn btn-primary">Submit review</button>
+</form>
+{% else %}
+<p><a href="/accounts/login/">Login</a> to review.</p>
+{% endif %}
+{% endblock %}

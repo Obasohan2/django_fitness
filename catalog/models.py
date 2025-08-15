@@ -2,16 +2,23 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-CATEGORY_CHOICES = (
-    ('merch', 'Merchandise'),
-    ('exercise', 'Exercise Plan'),
-    ('nutrition', 'Nutrition Plan'),
-)
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)

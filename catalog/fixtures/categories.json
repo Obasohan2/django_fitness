@@ -1,0 +1,5 @@
+[
+  {"model": "catalog.category", "pk": 1, "fields": {"name": "Merchandise",   "slug": "merch"}},
+  {"model": "catalog.category", "pk": 2, "fields": {"name": "Exercise Plan", "slug": "exercise"}},
+  {"model": "catalog.category", "pk": 3, "fields": {"name": "Nutrition Plan","slug": "nutrition"}}
+]

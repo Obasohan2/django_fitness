@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
-<h2>Shop</h2>
+<h1>Shop</h1>
 <div class="row">
   {% for p in products %}
   <div class="col-md-4 mb-4">
@@ -16,4 +26,6 @@
   </div>
   {% endfor %}
 </div>
-{% endblock %}
+{% endblock %} 
+
+

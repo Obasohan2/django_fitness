@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',  # required by allauth
+    "crispy_forms",
+    'crispy_bootstrap4',
     
     # Allauth
     'allauth',
@@ -46,7 +48,11 @@ INSTALLED_APPS = [
     
     'home',  # your app
     'catalog',  
+    'profiles.apps.ProfilesConfig',  # your app
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

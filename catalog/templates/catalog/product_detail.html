@@ -36,7 +36,7 @@
             <!-- Category and Rating -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Category: 
-                    <a href="{/category_detail' product.category.slug/}" class="text-decoration-none">
+                    <a href="/category_detail' product.category.slug/" class="text-decoration-none">
                         {{ product.category.name }}
                     </a>
                 </span>
@@ -67,7 +67,7 @@
             </div>
 
             <!-- Share Buttons -->
-            {/include 'snippets/share.html/}
+            {/snippets/share.html/}
         </div>
     </div>
 
@@ -93,7 +93,7 @@
                     </div>
                     <h6 class="text-muted mb-3">{{ review.created|date:"F j, Y" }}</h6>
                     <h6>{{ review.title }}</h6>
-                    <p class="card-text">{{ review.body }}</p>
+                    <p class="card-text">{{ review.review }}</p>
                 </div>
             </div>
             {% empty %}
@@ -108,7 +108,6 @@
                <div class="card-body">
                     <h4 class="card-title">Write a Review</h4>
                     <form method="post" action="{% url 'add_review' product.slug %}">
-                        {% if review_form.errors %}
                         {% csrf_token %}
                         {{ review_form|crispy }}
                         <button type="submit" class="btn btn-primary mt-3">
@@ -127,4 +126,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

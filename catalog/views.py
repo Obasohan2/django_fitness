@@ -1,5 +1,5 @@
 from django.shortcuts import render, reverse, get_object_or_404, redirect
-from .models import Product
+from .models import Product, Category
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -7,30 +7,61 @@ from django.db.models import Q
 
 def product_list(request):
     """ A view to show all products, including sorting and search queries """
-
     products = Product.objects.all()
     query = None
     categories = None
+    sort = None
+    direction = None
+    current_sorting = None
 
-    if request.GET:
-        if 'category' in request.GET:
-            categories = request.GET['category'].split(',')
-            products = products.filter(category__name__in=categories)
-            categories = Category.objects.filter(name__in=categories)
+    # Handle sorting
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+        direction = request.GET.get('direction', 'asc')
+        
+        # Map sort keys to actual field names
+        sort_mapping = {
+            'name': 'lower_name',
+            'price': 'price',
+            'category': 'category__name',
+            'rating': 'rating',
+        }
+        
+        if sort in sort_mapping:
+            sortkey = sort_mapping[sort]
             
-        if 'q' in request.GET:
-            query = request.GET['q']
-            if not query:
-                messages.error(request, "You didn't enter any search criteria!")
-                return redirect(reverse('products'))
+            # Handle case-insensitive name sorting
+            if sort == 'name':
+                products = products.annotate(lower_name=Lower('name'))
+            
+            # Apply direction
+            if direction == 'desc':
+                sortkey = f'-{sortkey}'
+            
+            products = products.order_by(sortkey)
+            current_sorting = f'{sort}_{direction}'
 
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
-            products = products.filter(queries)
+    # Handle category filtering
+    if 'category' in request.GET:
+        categories = request.GET['category'].split(',')
+        products = products.filter(category__name__in=categories)
+        categories = Category.objects.filter(name__in=categories)
+
+    # Handle search queries
+    if 'q' in request.GET:
+        query = request.GET['q']
+        if not query:
+            messages.error(request, "You didn't enter any search criteria!")
+            return redirect(reverse('products'))
+        
+        queries = Q(name__icontains=query) | Q(description__icontains=query)
+        products = products.filter(queries)
 
     context = {
         'products': products,
         'search_term': query,
         'current_categories': categories,
+        'current_sorting': current_sorting,
     }
 
     return render(request, 'catalog/product_list.html', context)

@@ -105,9 +105,10 @@
             <!-- Review Form -->
             {% if request.user.is_authenticated %}
             <div class="card mt-4">
-                <div class="card-body">
+               <div class="card-body">
                     <h4 class="card-title">Write a Review</h4>
                     <form method="post" action="{% url 'add_review' product.slug %}">
+                        {% if review_form.errors %}
                         {% csrf_token %}
                         {{ review_form|crispy }}
                         <button type="submit" class="btn btn-primary mt-3">

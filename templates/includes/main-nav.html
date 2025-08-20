@@ -4,24 +4,23 @@
            <!-- Products -->
         <li class="nav-item">
      
-        <!-- Workout Plans Dropdown -->
-        {% comment %} <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
             <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
-               href="#" id="all-products-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               href="/shop/" id="all-products-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                Shop
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
-                <a href="#" class="dropdown-item">Catalog</a>
-                <a href="#" class="dropdown-item">Weight Loss</a>
-                <a href="#" class="dropdown-item">Muscle Gain</a>
-                <a href="#" class="dropdown-item">Maintain Muscle</a>
+                <a href="/shop/?sort=price&direction=asc" class="dropdown-item">By Price</a>
+                <a href="/shop/?sort=rating&direction=desc" class="dropdown-item ">By Rating</a>
+                <a href="/shop/?sort=category&direction=asc" class="dropdown-item ">By Category</a>
+                <a href="/shop/" class="dropdown-item">All Products</a>
             </div>
-        </li> {% endcomment %}
-
+        </li> 
+{% comment %} 
      <li class="nav-item">
         <a class="logo-font font-weight-bold nav-link text-black mr-5"
-        href="#">Shop</a>
-      </li>
+        href="/shop/">Shop</a>
+      </li> {% endcomment %}
 
 
         <!-- Community Dropdown -->
@@ -65,13 +64,12 @@
         <li class="nav-item dropdown">
             <a class="logo-font font-weight-bold nav-link text-black dropdown-toggle"
                href="#" id="specials-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Special Offers
+                Workout Plans
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="specials-link">
                 <a href="#"? category=exercise_plan" class="dropdown-item">Exercise Plan</a>
                 <a href="#"? category=nutrition_plan" class="dropdown-item">Nutrition Plan</a>
                 <a href="#"? category=merchandise" class="dropdown-item">Merchandise</a>
-                <a href="#"? category=workout_plans" class="dropdown-item">Workout Plans</a>
             </div>
         </li>
 

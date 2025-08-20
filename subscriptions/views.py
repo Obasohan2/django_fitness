@@ -31,8 +31,3 @@
 
 # def cancel(request):
 #     return render(request, 'subscriptions/cancel.html')
-
-from django.shortcuts import render
-
-def plans(request):
-    return render(request, 'subscriptions/plans.html') 

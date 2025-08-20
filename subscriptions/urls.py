@@ -7,11 +7,3 @@
 #     path('success/', views.success, name='sub_success'),
 #     path('cancel/', views.cancel, name='sub_cancel'),
 # ]
-
-
-from django.urls import path
-from . import views  # Correct way to import views from the same app
-
-urlpatterns = [
-    path('', views.plans, name='plans'),  # This will work if views.plans exists
-]

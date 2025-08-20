@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Product, Category
+from .models import CartItem
 
 # Register your models here.
 
@@ -17,3 +18,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category','active')
     search_fields = ('name','slug','description')
     prepopulated_fields = {"slug": ("name",)}
+    
+    
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity', 'added_at')
+    search_fields = ('user__username', 'product__name')

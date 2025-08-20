@@ -18,13 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from catalog import views as catalog_views 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+   path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('home.urls')),
     path('profile/', include('profiles.urls')),
     path('shop/', include('catalog.urls')),
-    path('subscribe/', include('subscriptions.urls')),
+    # Add cart routes directly here if they're in catalog views
+    path('cart/', catalog_views.cart_view, name='cart'),
+    path('cart/add/<int:product_id>/', catalog_views.add_to_cart, name='add_to_cart'),
+    path('cart/remove/<int:item_id>/', catalog_views.remove_from_cart, name='remove_from_cart'),
+    # path('subscribe/', include('subscriptions.urls')),
     path('checkout/', include('checkout.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

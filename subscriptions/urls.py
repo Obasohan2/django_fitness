@@ -1,9 +1,8 @@
-# from django.urls import path
-# from . import views
+from django.urls import path
+from . import views
 
-# urlpatterns = [
-#     path('', views.plans, name='plans'),
-#     path('start/<int:plan_id>/', views.start_checkout, name='start_subscription'),
-#     path('success/', views.success, name='sub_success'),
-#     path('cancel/', views.cancel, name='sub_cancel'),
-# ]
+urlpatterns = [
+    path('', views.subscription_plans, name='subscription_plans'),
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('success/', views.subscription_success, name='subscription_success'),
+]

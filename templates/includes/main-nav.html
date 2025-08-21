@@ -1,75 +1,44 @@
 <div class="collapse navbar-collapse" id="main-nav">
     <ul class="navbar-nav w-auto mx-auto">
 
-           <!-- Products -->
+        <!-- Shop Dropdown -->
+        <li class="nav-item dropdown">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
+            href="#" id="all-products-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Shop
+        </a>    
+        <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
+            <a href="/shop/?sort=price&direction=asc" class="dropdown-item">By Price</a>
+            <a href="/shop/?sort=rating&direction=desc" class="dropdown-item">By Rating</a>
+            <a href="/shop/?sort=category&direction=asc" class="dropdown-item">By Category</a>
+            <a href="{% url 'products' %}" class="dropdown-item">All Products</a>
+        </div>
+    </li>
+
+        <!-- Community -->
         <li class="nav-item">
-     
-      <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
-               href="/shop/" id="all-products-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               Shop
-            </a>
-            <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
-                <a href="/shop/?sort=price&direction=asc" class="dropdown-item">By Price</a>
-                <a href="/shop/?sort=rating&direction=desc" class="dropdown-item ">By Rating</a>
-                <a href="/shop/?sort=category&direction=asc" class="dropdown-item ">By Category</a>
-                <a href="/shop/" class="dropdown-item">All Products</a>
-            </div>
-        </li> 
-{% comment %} 
-     <li class="nav-item">
-        <a class="logo-font font-weight-bold nav-link text-black mr-5"
-        href="/shop/">Shop</a>
-      </li> {% endcomment %}
-
-
-        <!-- Community Dropdown -->
-        {% comment %} <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
-               href="#" id="community-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="/community/">
                 Community
             </a>
-            <div class="dropdown-menu border-0" aria-labelledby="community-link">
-                <a href="#" class="dropdown-item">Forum</a>
-                <a href="#" class="dropdown-item">Success Stories</a>
-                <a href="#" class="dropdown-item">Challenges</a>
-            </div>
-        </li> {% endcomment %}
-       
-
-        <li class="nav-item">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5"
-            href="#">Community</a>
         </li>
 
-        <!-- Nutrition Plans Dropdown -->
-        {% comment %} <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
-               href="#" id="nutrition-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Plan
+        <!-- Subscriptions -->
+        <li class="nav-item">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="/subscriptions/">
+                Subscriptions
             </a>
-            <div class="dropdown-menu border-0" aria-labelledby="nutrition-link">
-                <a href="#" class="dropdown-item">Fat Burn</a>
-                <a href="#" class="dropdown-item">Muscle Fuel</a>
-                <a href="#" class="dropdown-item">Balanced Diet</a>
-            </div>
-        </li> {% endcomment %}
-
-        <li class="nav-item">
-        <a class="logo-font font-weight-bold nav-link text-black mr-5"
-        href="#">Subscriptions</a>
         </li>
 
-        <!-- Special Offers Dropdown -->
+        <!-- Workout Plans Dropdown -->
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black dropdown-toggle"
-               href="#" id="specials-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5 dropdown-toggle"
+               href="#" id="workout-plans-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Workout Plans
             </a>
-            <div class="dropdown-menu border-0" aria-labelledby="specials-link">
-                <a href="#"? category=exercise_plan" class="dropdown-item">Exercise Plan</a>
-                <a href="#"? category=nutrition_plan" class="dropdown-item">Nutrition Plan</a>
-                <a href="#"? category=merchandise" class="dropdown-item">Merchandise</a>
+            <div class="dropdown-menu border-0" aria-labelledby="workout-plans-link">
+                <a href="/shop/?category=exercise" class="dropdown-item">Exercise Plan</a>
+                <a href="/shop/?category=nutrition" class="dropdown-item">Nutrition Plan</a>
+                <a href="/shop/?category=merch" class="dropdown-item">Merchandise</a>
             </div>
         </li>
 

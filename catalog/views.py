@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, CartItem
+from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
+from decimal import Decimal, ROUND_HALF_UP
+from .models import Product, CartItem
 
 
 def product_list(request):
@@ -14,38 +15,58 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, active=True)
     return render(request, 'catalog/product_detail.html', {'product': product})
 
+from decimal import Decimal, ROUND_HALF_UP
+from django.shortcuts import render, get_object_or_404
+from .models import Product, CartItem
 
 def cart_view(request):
+    cart_items = []
+    total_price = Decimal("0.00")
+    cart_count = 0
+
     if request.user.is_authenticated:
         # Use CartItem model for logged-in users
-        cart_items = CartItem.objects.filter(user=request.user)
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-        context_cart_items = cart_items  # list of CartItem instances
+        user_cart_items = CartItem.objects.filter(user=request.user)
+
+        for item in user_cart_items:
+            line_total = (item.product.price * item.quantity).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            cart_items.append({
+                'product': item.product,
+                'quantity': item.quantity,
+                'total': line_total
+            })
+            total_price += line_total
+            cart_count += item.quantity
+
     else:
         # Use session-based cart for anonymous users
         session_cart = request.session.get('cart', {})
-        cart_items = []
-        total_price = 0
+        if not isinstance(session_cart, dict):
+            session_cart = {}
 
-        for product_id, quantity in session_cart.items():
+        for product_id, item in session_cart.items():
             try:
                 product = Product.objects.get(id=int(product_id))
-                item_total = product.price * quantity
+                qty = int(item.get('qty', 0))
+                price = Decimal(str(item.get('price', product.price)))
+                line_total = (qty * price).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
                 cart_items.append({
                     'product': product,
-                    'quantity': quantity,
-                    'total': item_total
+                    'quantity': qty,
+                    'total': line_total
                 })
-                total_price += item_total
-            except (Product.DoesNotExist, ValueError):
+                total_price += line_total
+                cart_count += qty
+
+            except (Product.DoesNotExist, ValueError, TypeError):
                 continue
 
-        context_cart_items = cart_items  # list of dicts
-
+    # Render the cart page with all cart context
     return render(request, 'catalog/cart.html', {
-        'cart_items': context_cart_items,
-        'total_price': total_price,
-        'cart_count': len(context_cart_items),
+        'cart_items': cart_items,
+        'total_price': total_price.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP),
+        'cart_count': cart_count,
         'user_is_authenticated': request.user.is_authenticated,
     })
 
@@ -66,14 +87,18 @@ def add_to_cart(request, slug):
         cart = request.session.get('cart', {})
         product_id = str(product.id)
 
-        if product_id in cart:
-            cart[product_id] += 1
+        if product_id in cart and isinstance(cart[product_id], dict):
+            cart[product_id]['qty'] += 1
         else:
-            cart[product_id] = 1
+            cart[product_id] = {
+                'qty': 1,
+                'price': str(product.price)
+            }
 
         request.session['cart'] = cart
+        request.session.modified = True  # Ensures Django saves the session
+
     messages.success(request, f"Added {product.name} to cart")
-    print(request.session['cart'])
     return redirect('product_detail', slug=slug)
 
 
@@ -88,6 +113,7 @@ def remove_from_cart(request, product_id):
         if product_id_str in cart:
             del cart[product_id_str]
             request.session['cart'] = cart
+            request.session.modified = True
 
     messages.success(request, f"Removed {product.name} from cart.")
     return redirect('cart_view')
@@ -113,11 +139,18 @@ def update_cart(request, product_id):
                 product_id_str = str(product_id)
 
                 if quantity > 0:
-                    cart[product_id_str] = quantity
+                    if product_id_str in cart and isinstance(cart[product_id_str], dict):
+                        cart[product_id_str]['qty'] = quantity
+                    else:
+                        cart[product_id_str] = {
+                            'qty': quantity,
+                            'price': str(product.price)
+                        }
                 else:
                     cart.pop(product_id_str, None)
 
                 request.session['cart'] = cart
+                request.session.modified = True
 
             messages.success(request, "Cart updated successfully")
 
@@ -134,6 +167,7 @@ def clear_cart(request):
     else:
         if 'cart' in request.session:
             del request.session['cart']
+            request.session.modified = True
 
     messages.success(request, "Cart cleared successfully")
     return redirect('cart_view')

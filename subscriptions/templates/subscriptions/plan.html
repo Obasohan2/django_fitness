@@ -1,18 +1,29 @@
-<!-- {% extends 'base.html' %}
-{% block content %}
-<h2>Membership Plans</h2>
-<div class="row">
-  {% for plan in plans %}
-  <div class="col-md-4 mb-3">
-    <div class="card h-100">
-      <div class="card-body d-flex flex-column">
-        <h5 class="card-title">{{ plan.name }}</h5>
-        <p class="card-text">{{ plan.description }}</p>
-        <p class="h4">£{{ plan.price }} / {{ plan.get_interval_display }}</p>
-        <a class="btn btn-primary mt-auto" href="{% url 'start_subscription' plan.id %}">Subscribe</a>
-      </div>
+{% extends "base.html" %}
+
+{% block page_header %}
+  <div class="container header-container">
+    <div class="row">
+      <div class="col text-center"></div>
     </div>
   </div>
-  {% endfor %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Available Plans</h2>
+  <div class="row">
+    {% for plan in plans %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">{{ plan.name }}</h5>
+            <p class="card-text">{{ plan.description }}</p>
+            <p class="card-text"><strong>£{{ plan.price }} / {{ plan.get_duration_display }}</strong></p>
+            <a href="{% url 'subscribe' %}" class="btn btn-primary">Subscribe</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
-{% endblock %} -->
+{% endblock %}

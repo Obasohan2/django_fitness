@@ -4,6 +4,129 @@
 {% block page_header %}
   <div class="container header-container">
     <div class="row">
+      <div class="col text-center">
+        <h2 class="mt-4">Your Shopping Cart</h2>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="overlay"></div>
+<div class="container mt-5">
+    
+    {% if cart_items %}
+    <div class="mb-3">
+        <p><strong>{{ cart_count }} item{{ cart_count|pluralize }} in your cart</strong></p>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-right">Subtotal</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <!-- Product Image and Info -->
+                    <td>
+                        <div class="d-flex align-items-start">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail mr-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/no-image.png' %}" alt="No image" class="img-thumbnail mr-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            {% endif %}
+                            <div class="ml-2">
+                                <strong>{{ item.product.name }}</strong>
+                                {% if item.product.description %}
+                                    <br>
+                                    <small class="text-muted">{{ item.product.description|truncatewords:10 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Price -->
+                    <td class="text-right">£{{ item.product.price|floatformat:2 }}</td>
+
+                    <!-- Quantity Form -->
+                    <td class="text-center">
+                        <form action="{% url 'update_cart' item.product.id %}" method="post" class="form-inline justify-content-center">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                                   class="form-control form-control-sm" style="width: 80px;">
+                            <button type="submit" class="btn btn-sm btn-outline-primary ml-2">Update</button>
+                        </form>
+                    </td>
+
+                    <!-- Line Total -->
+                    <td class="text-right">£{{ item.total|floatformat:2 }}</td>
+
+                    <!-- Remove -->
+                    <td class="text-center">
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Grand Total:</strong></td>
+                    <td class="text-right"><strong>£{{ total_price|floatformat:2 }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Cart Buttons -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <a href="{% url 'products' %}" class="btn btn-success">
+                ← Continue Shopping
+            </a>
+        </div>
+        <div class="col-md-6 text-right">
+            <form action="{% url 'clear_cart' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-warning">Clear Cart</button>
+            </form>
+            <a href="{% url 'checkout' %}" class="btn btn-primary ml-2">Proceed to Checkout</a>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="alert alert-info text-center">
+        <h4>Your cart is empty</h4>
+        <p>Start shopping to add items to your cart!</p>
+        <a href="{% url 'products' %}" class="btn btn-primary mt-2">Browse Products</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+{% comment %} {% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+  <div class="container header-container">
+    <div class="row">
       <div class="col text-center"></div>
     </div>
   </div>
@@ -89,9 +212,10 @@
     <!-- Cart Actions -->
     <div class="row mt-4">
         <div class="col-md-6">
-            <a href="{% url 'products' %}" class="btn btn-outline-secondary">
+            <a href="{% url 'products' %}" class="btn btn-success">
                 ← Continue Shopping
             </a>
+
         </div>
         <div class="col-md-6 text-right">
             <form action="{% url 'clear_cart' %}" method="post" style="display: inline;">
@@ -110,4 +234,4 @@
     </div>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}

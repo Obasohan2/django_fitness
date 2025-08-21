@@ -84,7 +84,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'catalog.context_processors.cart',  # Add cart context processor
-                'catalog.context_processors.cart_item_count',
             ],
         },
     },

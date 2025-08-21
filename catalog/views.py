@@ -50,7 +50,6 @@ def cart_view(request):
     })
 
 
-
 def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
@@ -73,8 +72,8 @@ def add_to_cart(request, slug):
             cart[product_id] = 1
 
         request.session['cart'] = cart
-
     messages.success(request, f"Added {product.name} to cart")
+    print(request.session['cart'])
     return redirect('product_detail', slug=slug)
 
 
@@ -90,7 +89,7 @@ def remove_from_cart(request, product_id):
             del cart[product_id_str]
             request.session['cart'] = cart
 
-    messages.success(request, f"Removed {product.name} from cart")
+    messages.success(request, f"Removed {product.name} from cart.")
     return redirect('cart_view')
 
 

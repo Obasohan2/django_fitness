@@ -1,4 +1,5 @@
 from decimal import Decimal, ROUND_HALF_UP
+from .models import CartItem
 
 
 def cart(request):
@@ -38,3 +39,13 @@ def cart(request):
         "cart_total": total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP),
         "cart_items": cart_items,
     }
+
+
+def cart_item_count(request):
+    count = 0
+    if request.user.is_authenticated:
+        count = CartItem.objects.filter(user=request.user).count()
+    else:
+        cart = request.session.get('cart', {})
+        count = sum(cart.values())
+    return {'cart_count': count}

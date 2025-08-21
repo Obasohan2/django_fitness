@@ -48,15 +48,11 @@
                     </td>
 
                     <td class="text-right">£{{ item.total|floatformat:2 }}</td>
-
                     <td class="text-center">
-                        <form method="post" action="{% if user_is_authenticated %}
-                        {% url 'remove_from_cart' item.product.id %}
-                        {% else %}
-                        {% url 'remove_from_cart' item.product.id %}{% endif %}">
-                          {% csrf_token %}
-                          <button type="submit">Remove</button>
-                        </form>
+                      <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                      </form>
                     </td>
                 </tr>
                 {% endfor %}

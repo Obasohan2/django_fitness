@@ -26,10 +26,6 @@ urlpatterns = [
     path('', include('home.urls')),
     path('profile/', include('profiles.urls')),
     path('shop/', include('catalog.urls')),
-    # Add cart routes directly here if they're in catalog views
-    path('cart/', catalog_views.cart_view, name='cart'),
-    path('cart/add/<int:product_id>/', catalog_views.add_to_cart, name='add_to_cart'),
-    path('cart/remove/<int:item_id>/', catalog_views.remove_from_cart, name='remove_from_cart'),
     # path('subscribe/', include('subscriptions.urls')),
     path('checkout/', include('checkout.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -41,11 +41,24 @@ def cart(request):
     }
 
 
+# def cart_item_count(request):
+#     count = 0
+#     if request.user.is_authenticated:
+#         count = CartItem.objects.filter(user=request.user).count()
+#     else:
+#         cart = request.session.get('cart', {})
+#         count = sum(cart.values())
+#     return {'cart_count': count}
+
 def cart_item_count(request):
     count = 0
     if request.user.is_authenticated:
         count = CartItem.objects.filter(user=request.user).count()
     else:
         cart = request.session.get('cart', {})
-        count = sum(cart.values())
-    return {'cart_count': count}
+        count = sum(
+            Decimal(str(item.get("qty", 0)))
+            for item in cart.values()
+            if isinstance(item, dict)
+        )
+    return {'cart_count': int(count)}

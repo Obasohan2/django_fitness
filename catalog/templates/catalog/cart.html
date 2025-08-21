@@ -16,7 +16,7 @@
     
     {% if cart_items %}
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped align-middle">
             <thead class="thead-dark">
                 <tr>
                     <th>Product</th>
@@ -29,15 +29,31 @@
             <tbody>
                 {% for item in cart_items %}
                 <tr>
+                    <!-- Product Image and Info -->
                     <td>
-                        <strong>{{ item.product.name }}</strong>
-                        {% if item.product.description %}
-                        <br><small class="text-muted">{{ item.product.description|truncatewords:10 }}</small>
-                        {% endif %}
+                        <div class="d-flex align-items-start">
+                            <!-- Image -->
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail mr-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/no-image.png' %}" alt="No image" class="img-thumbnail mr-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            {% endif %}
+
+                            <!-- Name and Description -->
+                            <div>
+                                <strong>{{ item.product.name }}</strong>
+                                {% if item.product.description %}
+                                <br>
+                                <small class="text-muted">{{ item.product.description|truncatewords:10 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
                     </td>
 
+                    <!-- Price -->
                     <td class="text-right">£{{ item.product.price|floatformat:2 }}</td>
 
+                    <!-- Quantity Update Form -->
                     <td class="text-center">
                         <form action="{% url 'update_cart' item.product.id %}" method="post" class="form-inline justify-content-center">
                             {% csrf_token %}
@@ -47,12 +63,15 @@
                         </form>
                     </td>
 
+                    <!-- Line Total -->
                     <td class="text-right">£{{ item.total|floatformat:2 }}</td>
+
+                    <!-- Remove Button -->
                     <td class="text-center">
-                      <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                      </form>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -67,6 +86,7 @@
         </table>
     </div>
 
+    <!-- Cart Actions -->
     <div class="row mt-4">
         <div class="col-md-6">
             <a href="{% url 'products' %}" class="btn btn-outline-secondary">
@@ -79,7 +99,6 @@
                 <button type="submit" class="btn btn-outline-warning">Clear Cart</button>
             </form>
             <a href="{% url 'checkout' %}" class="btn btn-primary ml-2">Proceed to Checkout</a>
-            {% comment %} <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a> {% endcomment %}
         </div>
     </div>
 

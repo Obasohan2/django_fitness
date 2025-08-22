@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_header %}
+  <div class="container header-container">
+    <div class="row">
+      <div class="col text-center"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<div class="overlay"></div>
+<h2 class="mb-4">👤 My Subscription Dashboard</h2>
+
+{% if user_sub %}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">{{ user_sub.plan.name }}</h4>
+      <p>{{ user_sub.plan.description }}</p>
+      <p><strong>Status:</strong> {{ user_sub.status }}</p>
+      <p><strong>Next Billing Date:</strong> {{ user_sub.current_period_end|date:"F j, Y" }}</p>
+      
+      {% if user_sub.status != "canceled" %}
+        <a href="{% url 'cancel_subscription' %}" class="btn btn-danger mt-3">Cancel Subscription</a>
+      {% else %}
+        <p class="text-muted mt-3">You have already cancelled your subscription. Access remains until the period end.</p>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <p>You don't have an active subscription.</p>
+  <a href="{% url 'subscription_plans' %}" class="btn btn-primary mt-3">View Plans</a>
+{% endif %}
+{% endblock %}

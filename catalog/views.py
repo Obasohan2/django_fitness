@@ -15,9 +15,6 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, active=True)
     return render(request, 'catalog/product_detail.html', {'product': product})
 
-from decimal import Decimal, ROUND_HALF_UP
-from django.shortcuts import render, get_object_or_404
-from .models import Product, CartItem
 
 def cart_view(request):
     cart_items = []

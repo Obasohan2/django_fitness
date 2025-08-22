@@ -84,3 +84,22 @@ class Order(models.Model):
         self.total = total.quantize(Decimal('0.01'))
         return self.total
 
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=200)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['order']),
+        ]
+
+    def __str__(self):
+        return f"{self.name} x{self.quantity}"
+
+    @property
+    def subtotal(self):
+        return (self.unit_price or Decimal('0')) * self.quantity
